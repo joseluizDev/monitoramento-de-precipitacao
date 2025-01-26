@@ -13,7 +13,7 @@ RUN npm install  # Ou 'yarn install' se estiver usando o Yarn
 COPY . /
 
 # Construir o projeto
-RUN npm run build  # Ou 'yarn build' se estiver usando o Yarn
+RUN ls -la && cat package.json && [ -f index.html ] && npm run build  # Ou 'yarn build' se estiver usando o Yarn
 
 # Etapa 2: Produção
 FROM nginx:alpine
