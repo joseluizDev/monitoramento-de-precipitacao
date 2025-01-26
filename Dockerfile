@@ -1,22 +1,20 @@
-FROM node:22 AS build
+# Usar uma imagem base oficial do Node.js
+FROM node:16-alpine
+
+# Definir o diretório de trabalho dentro do contêiner
 WORKDIR /app
 
-# Copiar apenas arquivos essenciais para instalar dependências
-COPY package.json package-lock.json ./
-RUN npm ci --only=production
+# Copiar o arquivo package.json e package-lock.json para o contêiner
+COPY package*.json ./
 
-# Copiar o restante do código
+# Instalar as dependências
+RUN npm install
+
+# Copiar o restante do código do projeto para o contêiner
 COPY . .
 
-# Executar o build
-RUN npm run build
-
-# Preparar a imagem final com nginx
-FROM nginx:alpine
-COPY --from=build /app/dist /usr/share/nginx/html
-
-# Expor a porta 80
+# Expor a porta que o Vite utiliza (por padrão é a 5173)
 EXPOSE 80
 
-# Iniciar o servidor
-CMD ["nginx", "-g", "daemon off;"]
+# Comando para rodar o servidor de desenvolvimento do Vite
+CMD ["npm", "run", "dev"]
