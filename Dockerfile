@@ -5,7 +5,7 @@ FROM node:18 AS build
 WORKDIR /app
 
 # Copiar os arquivos de dependências
-COPY Client/package.json Client/package-lock.json ./
+COPY ./package.json ./package-lock.json ./
 # Caso esteja usando o yarn, use 'yarn.lock' ao invés de 'package-lock.json'
 RUN npm ci --only=production
 
