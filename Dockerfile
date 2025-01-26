@@ -1,48 +1,43 @@
+# Etapa 1: Build
 FROM node:18 AS build
 
 WORKDIR /app
 
 COPY package.json package-lock.json ./
-
 RUN npm ci --only=production
 
-# Instalar dependências
-RUN npm install  # Ou 'yarn install' se estiver usando o Yarn
+# Instalar dependências completas para o build
+RUN npm install
 
-# Copiar todo o código fonte para dentro do container
-COPY . /
+# Copiar código-fonte
+COPY . .
+
+# Inspecionar arquivos (opcional, para debugging)
+RUN ls -la
 
 # Construir o projeto
-RUN ls -la && cat package.json && [ -f index.html ] && npm run build  # Ou 'yarn build' se estiver usando o Yarn
+RUN npm run build
 
 # Etapa 2: Produção
 FROM nginx:alpine
 
-# Copiar os arquivos construídos da etapa anterior
 COPY --from=build /app/dist /usr/share/nginx/html
 
-# Adicionar a configuração personalizada do Nginx
 RUN echo 'server { \
    listen 80; \
    server_name localhost; \
    root /usr/share/nginx/html; \
    index index.html; \
-   \
    location / { \
    try_files $uri /index.html; \
    } \
-   \
    location ~* \.(?:ico|css|js|gif|jpe?g|png|woff2?|eot|ttf|svg|webmanifest|map|json)$ { \
    expires 6M; \
    access_log off; \
    add_header Cache-Control "public"; \
    } \
-   \
    error_page 404 /index.html; \
    }' > /etc/nginx/conf.d/default.conf
 
-# Expor a porta 80
 EXPOSE 80
-
-# Iniciar o servidor Nginx
 CMD ["nginx", "-g", "daemon off;"]
