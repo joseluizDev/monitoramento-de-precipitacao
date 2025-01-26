@@ -5,18 +5,16 @@ FROM node:18 AS build
 WORKDIR /app
 
 # Copiar os arquivos de dependências
-COPY ./package.json ./package-lock.json ./
-# Caso esteja usando o yarn, use 'yarn.lock' ao invés de 'package-lock.json'
-RUN npm ci --only=production
+COPY package.json package-lock.json ./
 
 # Instalar dependências
-RUN npm install  # Ou 'yarn install' se estiver usando o Yarn
+RUN npm ci
 
 # Copiar todo o código fonte para dentro do container
-COPY ./ .
+COPY . .
 
 # Construir o projeto
-RUN npm run build  # Ou 'yarn build' se estiver usando o Yarn
+RUN npm run build
 
 # Etapa 2: Produção
 FROM nginx:alpine
