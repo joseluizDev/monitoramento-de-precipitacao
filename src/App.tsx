@@ -148,7 +148,7 @@ export default function PluviometroApp() {
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="max-w-5xl mx-auto"
+          className="max-w-5xl mx-auto h-full"
         >
           <div className="flex flex-col items-center justify-center mb-8 space-y-3 md:space-y-0 md:space-x-3 md:flex-row">
             <CloudRain className="w-10 h-10 text-blue-600" />
@@ -157,13 +157,14 @@ export default function PluviometroApp() {
             </h1>
           </div>
 
-          <div className="grid gap-6 md:grid-cols-[2fr,1fr]">
+          <div className="grid gap-6 md:grid-cols-[2fr,1fr] h-full">
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
+              className="h-full"
             >
-              <Card className="p-4 md:p-6 shadow-xl border-0 bg-white/80 backdrop-blur-sm rounded-2xl">
+              <Card className="p-4 md:p-6 shadow-xl border-0 bg-white/80 backdrop-blur-sm rounded-2xl h-full">
                 <div className="flex items-center space-x-2 mb-6">
                   <Droplets className="w-6 h-6 text-blue-600" />
                   <h2 className="text-xl md:text-2xl font-bold text-blue-800">Adicionar Dados</h2>
@@ -231,8 +232,9 @@ export default function PluviometroApp() {
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5, delay: 0.3 }}
+              className="h-full"
             >
-              <Card className="p-4 md:p-6 shadow-xl border-0 bg-white/80 backdrop-blur-sm rounded-2xl">
+              <Card className="p-4 md:p-6 shadow-xl border-0 bg-white/80 backdrop-blur-sm rounded-2xl h-full">
                 <div className="flex items-center space-x-2 mb-6">
                   <Search className="w-6 h-6 text-blue-600" />
                   <h2 className="text-xl md:text-2xl font-bold text-blue-800">Filtrar</h2>
@@ -258,9 +260,9 @@ export default function PluviometroApp() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.4 }}
-            className="mt-6"
+            className="mt-6 h-full"
           >
-            <Card className="p-4 md:p-6 shadow-xl border-0 bg-white/80 backdrop-blur-sm rounded-2xl">
+            <Card className="p-4 md:p-6 shadow-xl border-0 bg-white/80 backdrop-blur-sm rounded-2xl h-full">
               <div className="flex justify-between items-center mb-6">
                 <h2 className="text-xl md:text-2xl font-bold text-blue-800">Histórico de Precipitações</h2>
                 <Button
@@ -276,38 +278,38 @@ export default function PluviometroApp() {
                   <p className="text-blue-600">Carregando dados...</p>
                 </div>
               ) : historicoFiltrado.length > 0 ? (
-                <div className="overflow-x-auto rounded-xl border border-blue-100">
+                <div className="overflow-x-auto rounded-xl border border-blue-100 h-full">
                   <Table>
                     <thead>
                       <tr className="bg-gradient-to-r from-blue-500 to-blue-600">
-                        <th className="py-3 px-4 text-left text-white font-semibold">Pluviômetro</th>
-                        <th className="py-3 px-4 text-left text-white font-semibold">Precipitação</th>
-                        <th className="py-3 px-4 text-left text-white font-semibold">Data</th>
-                        <th className="py-3 px-4 text-left text-white font-semibold">Ações</th>
+                      <th className="py-3 px-4 text-center text-white font-semibold">Pluviômetro</th>
+                      <th className="py-3 px-4 text-center text-white font-semibold">Precipitação</th>
+                      <th className="py-3 px-4 text-center text-white font-semibold">Data</th>
+                      <th className="py-3 px-4 text-center text-white font-semibold">Ações</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {historicoFiltrado.map((item) => (
+                        {historicoFiltrado.map((item) => (
                         <tr
                           key={item.id}
                           className="border-b border-blue-50 hover:bg-blue-50/50 transition-colors duration-150"
                         >
-                          <td className="py-3 px-4 text-blue-800">{item.nome}</td>
-                          <td className="py-3 px-4 text-blue-800 font-medium">{item.dados}</td>
-                          <td className="py-3 px-4 text-blue-800">{item.data}</td>
-                          <td className="py-3 px-4">
-                            <Button
-                              onClick={() => excluirDados(item.id)}
-                              variant="destructive"
-                              size="sm"
-                              className="hover:bg-red-600 transition-colors duration-200"
-                            >
-                              <Trash2 className="w-4 h-4 mr-1" />
-                              Excluir
-                            </Button>
+                          <td className="py-3 px-4 text-blue-800 text-center">{item.nome}</td>
+                          <td className="py-3 px-4 text-blue-800 font-medium text-center">{item.dados}</td>
+                          <td className="py-3 px-4 text-blue-800 whitespace-nowrap text-center">{item.data}</td>
+                          <td className="py-3 px-4 text-center">
+                          <Button
+                            onClick={() => excluirDados(item.id)}
+                            variant="destructive"
+                            size="sm"
+                            className="hover:bg-red-600 transition-colors duration-200"
+                          >
+                            <Trash2 className="w-4 h-4 mr-1" />
+                            Excluir
+                          </Button>
                           </td>
                         </tr>
-                      ))}
+                        ))}
                     </tbody>
                   </Table>
                 </div>
